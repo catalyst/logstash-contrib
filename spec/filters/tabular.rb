@@ -1,8 +1,9 @@
+# encoding: utf-8
 require "test_utils"
 require "logstash/filters/tabular"
 
-describe Logstash::Filters::Tabular do
-  extend Logstash::RSpec
+describe LogStash::Filters::Tabular do
+  extend LogStash::RSpec
 
   describe "parses tabbed files (default config)" do
     config <<-CONFIG
@@ -10,12 +11,12 @@ describe Logstash::Filters::Tabular do
         tabular { }
       }
     CONFIG
-    
+
     sample("message" => "fubar") do
-      insist { subject["column_1"] } == "fubar"
+      insist { subject["column1"] } == "fubar"
     end
 
-    sample("message" => "su\tper\tcal\ti\tfra\tga\tlis\ttic\tex\tpe\tala\tdo\tcious"]) do
+    sample("message" => "su\tper\tcal\ti\tfra\tga\tlis\ttic\tex\tpe\tala\tdo\tcious") do
       insist { subject["column1"] } == "su"
       insist { subject["column2"] } == "per"
       insist { subject["column3"] } == "cal"
@@ -32,7 +33,7 @@ describe Logstash::Filters::Tabular do
     end
 
     sample("message" => "# This should be dropped") do
-      insist { subject.cancelled? } == true
+      insist { subject } == nil
     end
   end
 
